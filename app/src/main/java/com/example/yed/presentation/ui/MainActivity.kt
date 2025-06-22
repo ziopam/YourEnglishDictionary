@@ -1,4 +1,4 @@
-package com.example.yed
+package com.example.yed.presentation.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -14,9 +14,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -40,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.yed.R
 import com.example.yed.ui.theme.YEDTheme
 import kotlinx.coroutines.delay
 
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun MainScreen(
     onSearchClick: () -> Unit,
@@ -62,25 +64,38 @@ fun MainScreen(
     onLearnClick: () -> Unit,
     onSettingsClick: () -> Unit,
 ) {
-    YEDTheme {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            content = { innerPadding ->
-                Box(modifier = Modifier
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        content = { innerPadding ->
+            BoxWithConstraints(
+                modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
-                    contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center
+            ) {
+                val buttonsHeight = maxHeight * 0.5f
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
+                    Logo()
+
                     MainButtonsGrid(
                         onSearchClick = onSearchClick,
                         onWordsClick = onWordsClick,
                         onLearnClick = onLearnClick,
-                        onSettingsClick = onSettingsClick
+                        onSettingsClick = onSettingsClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(buttonsHeight)
+                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                     )
                 }
             }
-        )
-    }
+        }
+    )
 }
 
 
@@ -92,12 +107,10 @@ fun MainButtonsGrid(
     onWordsClick: () -> Unit,
     onLearnClick: () -> Unit,
     onSettingsClick: () -> Unit,
+    modifier: Modifier
 ) {
     BoxWithConstraints(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.5f)
-            .padding(16.dp)
+        modifier = modifier,
     ) {
         val tableSize = 2
         val space = 10.dp
