@@ -41,7 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yed.R
-import com.example.yed.ui.theme.YEDTheme
+import com.example.yed.presentation.ui.theme.YEDTheme
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
