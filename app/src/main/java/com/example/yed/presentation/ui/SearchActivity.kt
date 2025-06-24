@@ -110,10 +110,21 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()){
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     val wordValue = word
+                    val errorMessage = viewModel.errorMessage
                     if (isLoading) {
                         CircularProgressIndicator(modifier = Modifier.size(100.dp).align(Alignment.Center))
                     } else if (wordValue != null) {
                         WordDisplay(wordValue)
+                    } else if (errorMessage != null) {
+                        Text(
+                            text = errorMessage,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    } else {
+                        Text(
+                            text = "Enter a word to search for its definition",
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
                 }
             }

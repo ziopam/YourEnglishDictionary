@@ -21,6 +21,9 @@ class SearchViewModel @Inject constructor(
     private val currentWord = mutableStateOf(null as Word?)
     val wordState: State<Word?> = currentWord
 
+    private var _errorMessage: String? = null
+    val errorMessage: String? get() = _errorMessage
+
     fun getWordDefinition(word: String) {
         if(word.isBlank()){
             return
@@ -34,14 +37,23 @@ class SearchViewModel @Inject constructor(
                     val wordList = response.body()
                     if (wordList != null && wordList.isNotEmpty()) {
                         currentWord.value = wordList[0]
+                        _errorMessage = null
                     } else {
                         currentWord.value = null
+                        _errorMessage = "No results found for '$word'."
                     }
                 } else {
-                    println("Error: ${response.errorBody()?.string()}")
+                    if (response.code() == 404) {
+                        currentWord.value = null
+                        _errorMessage = "No results found for '$word'."
+                    } else {
+                        currentWord.value = null
+                        _errorMessage = "Internal server error. Please try again later."
+                    }
                 }
-            } catch (e: Exception) {
-                println(e.message)
+            } catch (_: Exception) {
+                currentWord.value = null
+                _errorMessage = "Please check your internet connection and try again."
             } finally {
                 isLoading.value = false
             }
