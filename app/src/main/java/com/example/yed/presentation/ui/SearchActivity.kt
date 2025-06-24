@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
@@ -26,24 +28,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.yed.R
-import com.example.yed.domain.entity.Definition
-import com.example.yed.domain.entity.Meaning
-import com.example.yed.domain.entity.Phonetic
-import com.example.yed.domain.entity.Word
 import com.example.yed.presentation.ui.theme.Purple40
 import com.example.yed.presentation.ui.theme.YEDTheme
+import com.example.yed.presentation.viewModels.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SearchActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             YEDTheme {
+                SearchScreen()
             }
         }
     }
@@ -58,8 +62,12 @@ fun SearchActivityPreview() {
 }
 
 @Composable
-fun SearchScreen(){
+fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()){
     var searchQuery by rememberSaveable { mutableStateOf("") }
+    val word by viewModel.wordState
+    val isLoading by viewModel.loadingState
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -92,48 +100,27 @@ fun SearchScreen(){
                         unfocusedIndicatorColor = Purple40,
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         focusedContainerColor = MaterialTheme.colorScheme.background,
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Search
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSearch = {
+                            keyboardController?.hide()
+                            viewModel.getWordDefinition(searchQuery)
+                        }
                     )
                 )
 
-                WordDisplay(
-                    word = Word(word = "ubiquitous",
-                        phonetics = listOf(
-                            Phonetic(
-                                text = "/juːˈbɪk.wə.təs/",
-                                audio = "https://api.dictionaryapi.dev/media/pronunciations/en/ubiquitous-uk.mp3"
-                            ),
-                            Phonetic(
-                                text = "/juˈbɪk.wɪ.təs/",
-                                audio = "https://api.dictionaryapi.dev/media/pronunciations/en/ubiquitous-us.mp3"
-                            )
-                        ),
-                        meanings = listOf(
-                            Meaning(
-                                partOfSpeech = "adjective",
-                                definitions = listOf(
-                                    Definition(
-                                        definition = "Being everywhere at once: omnipresent.",
-                                        example = "To Hindus, Jews, Christians, and Muslims, God is ubiquitous."
-                                    ),
-                                    Definition(
-                                        definition = "Широко распространённый, повсеместный",
-                                        example = "Plastic загрязнение стало повсеместной экологической проблемой."
-                                    )
-                                )
-                            ),
-                            Meaning(
-                                partOfSpeech = "noun",
-                                definitions = listOf(
-                                    Definition(
-                                        definition = "Что-то, что присутствует повсюду",
-                                        example = null
-                                    )
-                                )
-                            )
-                        ),)
-                )
+                val wordValue = word
+                 if (isLoading) {
+                     Text("Loading...")
+                 } else if (wordValue != null) {
+                    WordDisplay(wordValue)
+                } else {
+                    Text("No results found")
+                }
             }
         }
     )
 }
-
