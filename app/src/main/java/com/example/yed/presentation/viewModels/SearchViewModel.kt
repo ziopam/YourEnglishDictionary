@@ -36,7 +36,7 @@ class SearchViewModel @Inject constructor(
                 if (response.isSuccessful) {
                     val wordList = response.body()
                     if (wordList != null && wordList.isNotEmpty()) {
-                        currentWord.value = wordList[0]
+                        currentWord.value = fixPhonetics(wordList[0])
                         _errorMessage = null
                     } else {
                         currentWord.value = null
@@ -57,9 +57,24 @@ class SearchViewModel @Inject constructor(
             } finally {
                 isLoading.value = false
             }
-
         }
+    }
 
+    private fun fixPhonetics(word: Word): Word {
+        val phonetics = word.phonetics.filter { !it.text.isNullOrBlank() }
+            .let { filtered ->
+                val uk = filtered.firstOrNull { it.audio?.contains("uk", ignoreCase = true) == true }
+                val us = filtered.firstOrNull { it.audio?.contains("us", ignoreCase = true) == true }
 
+                val preferred = listOfNotNull(uk, us).distinct()
+
+                if (preferred.size < 2) {
+                    val remaining = filtered.filterNot { it == uk || it == us }
+                    (preferred + remaining.take(2 - preferred.size)).take(2)
+                } else {
+                    preferred
+                }
+            }
+        return word.copy(phonetics = phonetics)
     }
 }
