@@ -70,6 +70,7 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize().padding(innerPadding)
             ) {
+                BackButton(modifier = Modifier.fillMaxWidth().padding(top = 5.dp))
                 Logo()
                 OutlinedTextField(
                     value = searchQuery,
