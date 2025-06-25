@@ -9,6 +9,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+const val BASE_URL = "https://api.dictionaryapi.dev/"
+
 @Module
 @InstallIn(SingletonComponent::class)
 object NetModule {
@@ -17,7 +19,7 @@ object NetModule {
     @Singleton
     fun provideRetrofit() : Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://api.dictionaryapi.dev/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
