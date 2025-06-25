@@ -114,7 +114,7 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()){
                     if (isLoading) {
                         CircularProgressIndicator(modifier = Modifier.size(100.dp).align(Alignment.Center))
                     } else if (wordValue != null) {
-                        WordDisplay(wordValue)
+                        WordDisplay(word = wordValue, mediaPlayer = viewModel.mediaPlayer)
                     } else if (errorMessage != null) {
                         Text(
                             text = errorMessage,

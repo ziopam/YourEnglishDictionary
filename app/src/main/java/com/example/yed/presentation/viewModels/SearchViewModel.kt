@@ -1,5 +1,6 @@
 package com.example.yed.presentation.viewModels
 
+import android.media.MediaPlayer
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    val mediaPlayer: MediaPlayer
 ) : ViewModel() {
     private val isLoading = mutableStateOf(false)
     val loadingState: State<Boolean> = isLoading
@@ -23,6 +25,7 @@ class SearchViewModel @Inject constructor(
 
     private var _errorMessage: String? = null
     val errorMessage: String? get() = _errorMessage
+
 
     fun getWordDefinition(word: String) {
         if(word.isBlank()){
