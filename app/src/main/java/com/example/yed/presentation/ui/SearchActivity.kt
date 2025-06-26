@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +41,7 @@ import com.example.yed.R
 import com.example.yed.presentation.ui.theme.Purple40
 import com.example.yed.presentation.ui.theme.YEDTheme
 import com.example.yed.presentation.viewModels.SearchViewModel
+import com.example.yed.presentation.viewModels.WordSavingState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,11 +62,17 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()){
     var searchQuery by rememberSaveable { mutableStateOf("") }
     val word by viewModel.wordState
     val isLoading by viewModel.loadingState
+    val wordSavingState by viewModel.wordSavingState
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        floatingActionButton = {
+            if(!isLoading && word != null) {
+                WordButton(wordSavingState = wordSavingState, searchViewModel = viewModel)
+            }
+        },
         content = { innerPadding ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -131,4 +139,38 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()){
             }
         }
     )
+}
+
+@Composable
+fun WordButton(wordSavingState: WordSavingState, searchViewModel: SearchViewModel) {
+    if (wordSavingState == WordSavingState.Saved) {
+        FloatingActionButton(
+            onClick = {searchViewModel.removeWordFromDictionary()},
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.check),
+                contentDescription = "Already in dictionary",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    } else if (wordSavingState == WordSavingState.Loading) {
+        FloatingActionButton(
+            onClick = {},
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(30.dp),
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    } else {
+        FloatingActionButton(
+            onClick = {searchViewModel.addWordToDictionary()},
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.book),
+                contentDescription = "Add to dictionary",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
 }
