@@ -11,10 +11,10 @@ class WordRepositoryImpl(private val dao: WordDao) : IWordRepository {
     }
 
     override suspend fun getAllWords(): List<Word> =
-        dao.getAll().map { Word(it.word, it.phonetics, it.meanings) }
+        dao.getAll().map { Word(it.word, it.phonetics, it.meanings, it.isToLearn) }
 
     override suspend fun getAllToLearnWords(): List<Word> =
-        dao.getToLearn().map { Word(it.word, it.phonetics, it.meanings) }
+        dao.getToLearn().map { Word(it.word, it.phonetics, it.meanings, it.isToLearn) }
 
     override suspend fun isWordExists(wordText: String): Boolean {
         return dao.isExists(wordText)
