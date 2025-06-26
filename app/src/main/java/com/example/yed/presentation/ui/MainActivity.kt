@@ -54,7 +54,10 @@ class MainActivity : ComponentActivity() {
                 MainScreen({
                     val intent = Intent(this, SearchActivity::class.java)
                     startActivity(intent)
-                }, {}, {}, {})
+                }, {
+                    val intent = Intent(this, MyDictionaryActivity::class.java)
+                    startActivity(intent)
+                }, {}, {})
             }
         }
     }

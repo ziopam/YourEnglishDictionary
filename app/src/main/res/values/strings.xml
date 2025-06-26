@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">YED</string>
+    <string name="title_activity_my_dictionary">MyDictionaryActivity</string>
 </resources>

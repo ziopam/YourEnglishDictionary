@@ -111,7 +111,7 @@ class SearchViewModel @Inject constructor(
 
                 for (phonetic in phonetics) {
                     val audioUrl = phonetic.audio
-                    if (audioUrl != null) {
+                    if (!audioUrl.isNullOrBlank()) {
                         val fileName = audioUrl.substringAfterLast("/")
                         val result = downloadAudioAndSaveLocally(audioUrl, fileName)
 

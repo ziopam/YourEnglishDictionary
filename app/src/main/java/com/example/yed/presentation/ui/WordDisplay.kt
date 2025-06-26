@@ -84,6 +84,45 @@ fun WordDisplay(word: Word, mediaPlayer: MediaPlayer = MediaPlayer()) {
 }
 
 @Composable
+fun WordDisplayWithoutScroll(
+    word: Word,
+    mediaPlayer: MediaPlayer = MediaPlayer()
+) {
+    Column(
+        modifier = Modifier.padding(top = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = word.word.uppercase(),
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            for (i in word.phonetics.indices) {
+                val phonetic = word.phonetics[i]
+                PronunciationDisplay(
+                    isActive = !phonetic.audio.isNullOrBlank(),
+                    phonetic = phonetic,
+                    mediaPlayer = mediaPlayer,
+                    modifier = Modifier.weight(0.5f),
+                    accent = if (i == 0) "UK" else "US"
+                )
+            }
+        }
+
+        SectionHeader("DEFINITIONS", color = Purple40)
+
+        word.meanings.forEach { meaning ->
+            MeaningDisplay(meaning = meaning, modifier = Modifier.padding(horizontal = 16.dp))
+        }
+    }
+}
+
+@Composable
 fun PronunciationDisplay(
     modifier: Modifier = Modifier,
     isActive: Boolean,
@@ -97,8 +136,6 @@ fun PronunciationDisplay(
     Column (
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-
-
         ){
         Row(
             verticalAlignment = Alignment.CenterVertically,

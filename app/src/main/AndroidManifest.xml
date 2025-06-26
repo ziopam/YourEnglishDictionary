@@ -16,6 +16,11 @@
         android:theme="@style/Theme.YED"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.ui.MyDictionaryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_my_dictionary"
+            android:theme="@style/Theme.YED" />
+        <activity
             android:name=".presentation.ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -26,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.ui.SearchActivity"/>
+        <activity android:name=".presentation.ui.SearchActivity" />
     </application>
 
 </manifest>
