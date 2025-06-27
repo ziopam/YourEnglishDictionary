@@ -36,7 +36,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.ui.SearchActivity" />
+        <activity android:name=".presentation.ui.SearchActivity"
+            android:exported="false"
+            android:label="@string/title_activity_my_dictionary"
+            android:theme="@style/Theme.YED"/>
+        <activity android:name=".presentation.ui.SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.YED"/>
     </application>
 
 </manifest>
