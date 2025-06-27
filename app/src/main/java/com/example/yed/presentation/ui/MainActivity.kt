@@ -57,7 +57,10 @@ class MainActivity : ComponentActivity() {
                 }, {
                     val intent = Intent(this, MyDictionaryActivity::class.java)
                     startActivity(intent)
-                }, {}, {})
+                }, {
+                    val intent = Intent(this, LearnActivity::class.java)
+                    startActivity(intent)
+                }, {})
             }
         }
     }

@@ -16,6 +16,11 @@
         android:theme="@style/Theme.YED"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.ui.LearnActivity"
+            android:exported="false"
+            android:label="@string/title_activity_learn"
+            android:theme="@style/Theme.YED" />
+        <activity
             android:name=".presentation.ui.MyDictionaryActivity"
             android:exported="false"
             android:label="@string/title_activity_my_dictionary"
