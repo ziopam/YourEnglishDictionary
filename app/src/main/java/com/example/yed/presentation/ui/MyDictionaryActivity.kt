@@ -52,6 +52,7 @@ import com.example.yed.presentation.ui.theme.YEDTheme
 import com.example.yed.presentation.viewModels.MyDictionaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.text.style.TextAlign
 
 @AndroidEntryPoint
 class MyDictionaryActivity : ComponentActivity() {
@@ -91,9 +92,11 @@ fun MyDictionaryScreen(viewModel: MyDictionaryViewModel = hiltViewModel()) {
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "No words found in your dictionary. Use search to add them.",
+                                text = "No words found in your dictionary. \nUse search to add them.",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Color.DarkGray
+                                color = Color.DarkGray,
+                                modifier = Modifier.padding(horizontal = 5.dp),
+                                textAlign = TextAlign.Center
                             )
                         }
                     } else {
