@@ -14,6 +14,12 @@ Android приложение для изучения иностранных сл
 
 В приложении реализован адаптивный интерфейс, так что оно хорошо смотрится и работает как на телефонах, так и на планшетах.
 
+## Демонстрация работы
+
+
+https://github.com/user-attachments/assets/51207616-de29-4cb9-b73c-d83f3ecdc900
+
+
 ## Технологический стек
 - Язык: Kotlin (JVM target 11)
 - UI: Jetpack Compose (Material3, Animation, Foundation)
